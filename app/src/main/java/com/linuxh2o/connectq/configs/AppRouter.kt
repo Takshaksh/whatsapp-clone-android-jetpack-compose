@@ -1,6 +1,7 @@
 package com.linuxh2o.connectq.configs
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -11,6 +12,7 @@ import com.linuxh2o.connectq.ui.screens.SignupScreen
 import com.linuxh2o.connectq.ui.screens.SingleChatScreen
 import com.linuxh2o.connectq.ui.screens.SingleStatusScreen
 import com.linuxh2o.connectq.ui.screens.StatusListScreen
+import com.linuxh2o.connectq.ui.viewmodels.AuthViewModel
 
 sealed class AppRouter(val route: String){
   object Signup : AppRouter(SIGN_UP)
@@ -39,10 +41,11 @@ sealed class AppRouter(val route: String){
 @Composable
 fun AppNavigation(){
   val navController = rememberNavController()
+  val authViewModel: AuthViewModel = hiltViewModel()
 
   NavHost(navController = navController, startDestination = AppRouter.Signup.route){
     composable(AppRouter.Signup.route){
-      SignupScreen()
+      SignupScreen(navController, authViewModel)
     }
 
     composable(AppRouter.Login.route){
