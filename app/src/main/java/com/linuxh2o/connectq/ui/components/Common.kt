@@ -1,5 +1,6 @@
 package com.linuxh2o.connectq.ui.components
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import com.linuxh2o.connectq.ui.viewmodels.CommonViewModel
 
 @Composable
 fun ProgressIndicator(){
@@ -24,5 +27,15 @@ fun ProgressIndicator(){
     verticalAlignment = Alignment.CenterVertically
   ) {
     CircularProgressIndicator()
+  }
+}
+
+@Composable
+fun NotifyMessage(commonViewModel: CommonViewModel){
+  val notifyState = commonViewModel.popupNotification.value
+  val notifyMessage = notifyState?.getContentOrNull()
+
+  if (!notifyMessage.isNullOrEmpty()){
+    Toast.makeText(LocalContext.current, notifyMessage, Toast.LENGTH_SHORT).show()
   }
 }

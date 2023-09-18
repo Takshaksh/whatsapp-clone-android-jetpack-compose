@@ -5,6 +5,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.linuxh2o.connectq.ui.components.NotifyMessage
 import com.linuxh2o.connectq.ui.screens.ChatListScreen
 import com.linuxh2o.connectq.ui.screens.LoginScreen
 import com.linuxh2o.connectq.ui.screens.ProfileScreen
@@ -12,7 +13,7 @@ import com.linuxh2o.connectq.ui.screens.SignupScreen
 import com.linuxh2o.connectq.ui.screens.SingleChatScreen
 import com.linuxh2o.connectq.ui.screens.SingleStatusScreen
 import com.linuxh2o.connectq.ui.screens.StatusListScreen
-import com.linuxh2o.connectq.ui.viewmodels.AuthViewModel
+import com.linuxh2o.connectq.ui.viewmodels.CommonViewModel
 
 sealed class AppRouter(val route: String){
   object Signup : AppRouter(SIGN_UP)
@@ -41,11 +42,13 @@ sealed class AppRouter(val route: String){
 @Composable
 fun AppNavigation(){
   val navController = rememberNavController()
-  val authViewModel: AuthViewModel = hiltViewModel()
+  val commonViewModel: CommonViewModel = hiltViewModel()
+  
+  NotifyMessage(commonViewModel = commonViewModel)
 
   NavHost(navController = navController, startDestination = AppRouter.Signup.route){
     composable(AppRouter.Signup.route){
-      SignupScreen(navController, authViewModel)
+      SignupScreen(navController, commonViewModel)
     }
 
     composable(AppRouter.Login.route){

@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -30,19 +31,19 @@ import androidx.navigation.NavController
 import com.linuxh2o.connectq.R
 import com.linuxh2o.connectq.configs.AppRouter
 import com.linuxh2o.connectq.ui.components.ProgressIndicator
-import com.linuxh2o.connectq.ui.viewmodels.AuthViewModel
+import com.linuxh2o.connectq.ui.viewmodels.CommonViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignupScreen(navController: NavController, authViewModel: AuthViewModel){
+fun SignupScreen(navController: NavController, commonViewModel: CommonViewModel){
   val scrollState = rememberScrollState()
 
   Box(modifier = Modifier.fillMaxSize()) {
     Column(
       modifier = Modifier
-        .fillMaxSize()
+        .fillMaxWidth()
         .wrapContentHeight()
-        .verticalScroll(scrollState),
+        .verticalScroll(scrollState, true),
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
       val nameState = remember { mutableStateOf(TextFieldValue()) }
@@ -112,13 +113,16 @@ fun SignupScreen(navController: NavController, authViewModel: AuthViewModel){
         modifier = Modifier
           .padding(8.dp)
           .clickable {
-            navController.navigate(AppRouter.Login.route)
+            navController.navigate(AppRouter.Login.route){
+              popUpTo(AppRouter.Login.route)
+              launchSingleTop = true
+            }
           }
       )
     }
 
     // Progress indicator
-    val isLoading = authViewModel.isLoading.value
+    val isLoading = commonViewModel.isLoading.value
     if (isLoading){
       ProgressIndicator()
     }
