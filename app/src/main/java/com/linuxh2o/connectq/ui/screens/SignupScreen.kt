@@ -93,15 +93,20 @@ fun SignupScreen(navController: NavController, commonViewModel: CommonViewModel)
         value = passwordState.value,
         onValueChange = { passwordState.value = it},
         modifier = Modifier.padding(8.dp),
-        label = { Text(text = "*********") },
-        visualTransformation = PasswordVisualTransformation()
+        visualTransformation = PasswordVisualTransformation(),
+        label = { Text(text = "Password") }
       )
       
       Button(
         modifier = Modifier.padding(8.dp),
         onClick = {
           localFocus.clearFocus(force = true)
-          // TODO: Call view model
+          commonViewModel.onSignup(
+            nameState.value.text,
+            numberState.value.text,
+            emailState.value.text,
+            passwordState.value.text
+          )
         }
       ) {
         Text(text = "Signup")  
